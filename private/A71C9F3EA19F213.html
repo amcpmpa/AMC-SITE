@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Área Restrita</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 80px;
+        }
+        a {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            width: 260px;
+            background: #0a7cff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+    </style>
+    <script>
+        (function () {
+            try {
+                var flag = localStorage.getItem('amc_auth');
+                if (flag !== 'ok') {
+                    // Se tentar abrir direto esse arquivo sem passar pelo login:
+                    // volta para a página inicial (um nível acima)
+                    window.location.href = '../index.html';
+                }
+            } catch (e) {
+                window.location.href = '../index.html';
+            }
+        })();
+    </script>
+</head>
+<body>
+
+<h2>Links Autorizados</h2>
+
+<a href="https://google.com" target="_blank">Site 1</a>
+<a href="https://github.com" target="_blank">Site 2</a>
+<a href="https://seusite.com" target="_blank">Site 3</a>
+
+</body>
+</html>
