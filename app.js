@@ -1,9 +1,4 @@
 
-Alunos IFPA ANANIN
-Anexos
-10:43 (há 3 horas)
-para mim
-
 // app.js - controle de acesso com senha + hash + flag localStorage
 
 (function () {
@@ -68,4 +63,5 @@ para mim
     }
 
     _main();
+
 })();
