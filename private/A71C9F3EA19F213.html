@@ -7,13 +7,21 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 80px;
-        }
+            margin-top: 40px;
+            /* 
+            background-image: url('AMC.png');
+            background-size: 50%;        /* faz a imagem ocupar toda a tela 
+            background-position: bottom center;    centraliza a imagem
+            background-repeat: no-repeat;  não repete a imagem 
+            */
 
+        }
+        
         h2 {
-            margin-bottom: 40px;
+            margin-top: 0;
+            margin-bottom: 30px;
         }
-
+        
         .container {
             display: flex;  /* Usando Flexbox para dividir em colunas */
             justify-content: space-around;
@@ -21,20 +29,9 @@
         }
 
         .external {
-            width: 30%;
-            margin-left: calc(30% + 80px); /* Alinha perfeitamente abaixo da coluna 2 */
+            width: 50%;
+             /* Alinha perfeitamente abaixo da coluna 2 */
             margin-top: 40px;
-        }
-        
-        a {
-            display: block;
-            margin: 10px auto;
-            padding: 12px;
-            width: 260px;
-            background: #0a7cff;
-            color: white;
-            border-radius: 6px;
-            text-decoration: none;
         }
 
         .column {
@@ -44,6 +41,65 @@
             border-radius: 10px;
         }
 
+        .container .column {
+            background-color: rgba(237, 239, 241, 0.85);
+        }
+
+        /*
+        .container .column:nth-child(1) {
+            background-color: rgba(255, 230, 200, 0.85);
+        }
+
+        .container .column:nth-child(2) {
+            background-color: rgba(200, 230, 255, 0.85);
+        }
+
+        .container .column:nth-child(3) {
+            background-color: rgba(220, 255, 220, 0.85);
+        }
+        */
+
+        a {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            width: 80%;
+            background: #0a7cff;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* Botão de missões */
+        .btn-missoes {
+            background-color: #63a8e0; 
+            color: white;
+        }
+
+        /* Botão de oficiais */
+        .btn-oficiais {
+            background-color: #d83229; 
+            color: white;
+        }
+
+        /* Botão de agendamento */
+        .btn-agenda{
+            background-color: #58c45b;
+            color: white;
+        }
+
+        /* Botão de missões */
+        .btn-externo {
+            background-color: #fa6e44; 
+            color: white;
+        }
+        
+        /* Efeito de hover para todos */
+        a:hover {
+            opacity: 0.8;
+        }
+
         /* Adicionando um pouco de estilo nas colunas para título */
         .column h3 {
             text-align: center;
@@ -51,82 +107,85 @@
             font-size: 1.2em;
             color: #333;
         }
-        
+
         .bg {
-            position: fixed;
-            bottom: 0;       /* coloca embaixo */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1500px;    /* diminui a imagem */
-            opacity: 0.3;    /* opcional: deixa mais discreta */
-            z-index: -1;     /* coloca a imagem atrás */
+            position: relative;
+            width: 20%;
+            margin-bottom: 0;    /* remove espaço abaixo da imagem */
+            margin-top: -25px;
+
         }
+
+
     </style>
     <script>
         (function () {
             try {
                 var flag = localStorage.getItem('amc_auth');
                 if (flag !== 'ok') {
-                    // Se tentar abrir direto esse arquivo sem passar pelo login:
-                    // volta para a página inicial (um nível acima)
+                    // Se o flag não for 'ok', redireciona para a página inicial
                     window.location.href = '../index.html';
                 }
             } catch (e) {
+                // Em caso de erro (por exemplo, se o localStorage não for acessível), também redireciona
                 window.location.href = '../index.html';
             }
         })();
     </script>
+
+    <link rel="icon" type="image/png" href="icone.png">
 </head>
 <body>
 
 <img src="AMC.png" class="bg">
-    
-<h2>Links de acesso para o AMC</h2>
+
+<h2>AMBULATÓRIO MÉDICO CENTRAL</h2>
 
 <div class="container">
     <!-- Missões Column -->
     <div class="column">
         <h3>CONTROLE DE MiSSÕES</h3>
-        <a href="https://docs.google.com/spreadsheets/d/1V1YKzeBNBCcqrlOmBnjBQQ6bCm8Ws7yLhitFoGRdLl8/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">ORDENS DE SERVIÇOS - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/1O6uCCf7QLYlXaIfGjk_tywUEwTFFXCikPOHq0PHiZ0k/edit" target="_blank" rel="noopener noreferrer">ORDENS DE SERVIÇOS - 2026</a>
-        <a href="https://docs.google.com/spreadsheets/d/1ymg-pbgmBhnh0RiW0wr-nfPsjiKMD6ebxvLgld2PY5o/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">JIES e JRS - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/1yPsa8MChZhO1j7urF26YCaxMUvVm6mAE4iyrD3-h35k/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">JIES e JRS - 2026</a>
-        <a href="https://drive.google.com/drive/u/0/folders/1RWkiafijJAtqo7cjzRLas0eNNaIuI9xW" target="_blank" rel="noopener noreferrer">Drive 2025</a>
-        <a href="https://drive.google.com/drive/u/0/folders/1V2r4e_oz0ssS9_AO_mGJdoe8v_FFJmin" target="_blank" rel="noopener noreferrer">Drive 2026</a>
+        <a href="https://docs.google.com/spreadsheets/d/1V1YKzeBNBCcqrlOmBnjBQQ6bCm8Ws7yLhitFoGRdLl8/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-missoes" >ORDENS DE SERVIÇOS - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1O6uCCf7QLYlXaIfGjk_tywUEwTFFXCikPOHq0PHiZ0k/edit" target="_blank" rel="noopener noreferrer" class="btn-missoes">ORDENS DE SERVIÇOS - 2026</a>
+        <a href="https://docs.google.com/spreadsheets/d/1ymg-pbgmBhnh0RiW0wr-nfPsjiKMD6ebxvLgld2PY5o/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-missoes">JIES e JRS - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1yPsa8MChZhO1j7urF26YCaxMUvVm6mAE4iyrD3-h35k/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-missoes">JIES e JRS - 2026</a>
+        <a href="https://drive.google.com/drive/u/0/folders/1RWkiafijJAtqo7cjzRLas0eNNaIuI9xW" target="_blank" rel="noopener noreferrer" class="btn-missoes">Drive 2025</a>
+        <a href="https://drive.google.com/drive/u/0/folders/1V2r4e_oz0ssS9_AO_mGJdoe8v_FFJmin" target="_blank" rel="noopener noreferrer" class="btn-missoes">Drive 2026</a>
     </div>
 
     <!-- Processos Internos Column -->
     <div class="column">
         <h3>CONTROLE INTERNO E DOS OFICIAIS</h3>
-        <a href="https://docs.google.com/spreadsheets/d/1ojUOdZiSN6Kc0uW_nIIFeUwTj6Odm1x9Tcf7Nv2EM6U/edit?gid=844984075#gid=844984075" target="_blank" rel="noopener noreferrer">QTS - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/1V5h9gREgJwFOz4Pfp5Shs7Ik7_leFgdDWeNtnSBw7II/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">PROTOCOLO - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/1dtSDwuhakj5p-YDJJskuAvldGxr0vCmXm2STbV6hXU0/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">ESCALA OMD - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/18yFg4s2d6YhvDxldQ5JiLooyivnhcTSBhX-cBNJfTVo/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">ESCALA DE MISSÕES - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/17d3euE2kp53YeZ2G6cZJsNiFOT_hL3JFOstOEDfNcdo/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">PERMURTAS - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/155Rn45q3m1hHc0vY4WujjNt1Fwm0yMVJovhMSIKgBLE/edit?gid=1774270931#gid=1774270931" target="_blank" rel="noopener noreferrer">ESCALA VERMELHA</a>
-        <a href="https://docs.google.com/spreadsheets/d/155Rn45q3m1hHc0vY4WujjNt1Fwm0yMVJovhMSIKgBLE/edit?gid=1774270931#gid=1774270931" target="_blank" rel="noopener noreferrer">ESCALA DE VIAGENS</a>
+        <a href="https://docs.google.com/spreadsheets/d/1ojUOdZiSN6Kc0uW_nIIFeUwTj6Odm1x9Tcf7Nv2EM6U/edit?gid=844984075#gid=844984075" target="_blank" rel="noopener noreferrer" class="btn-oficiais">QTS - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1V5h9gREgJwFOz4Pfp5Shs7Ik7_leFgdDWeNtnSBw7II/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-oficiais">PROTOCOLO - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1dtSDwuhakj5p-YDJJskuAvldGxr0vCmXm2STbV6hXU0/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-oficiais">ESCALA OMD - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/18yFg4s2d6YhvDxldQ5JiLooyivnhcTSBhX-cBNJfTVo/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-oficiais">ESCALA DE MISSÕES - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/17d3euE2kp53YeZ2G6cZJsNiFOT_hL3JFOstOEDfNcdo/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-oficiais">PERMUTAS - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/155Rn45q3m1hHc0vY4WujjNt1Fwm0yMVJovhMSIKgBLE/edit?gid=1774270931#gid=1774270931" target="_blank" rel="noopener noreferrer" class="btn-oficiais">ESCALA DE VIAGENS - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1Qad2SNaJk9Y1XUlAPUbgagkiWMV4TsqtVf_AYZL_ZQE/edit?gid=275912284#gid=275912284" target="_blank" rel="noopener noreferrer" class="btn-oficiais">LICENÇAS E AFASTAMENTOS</a>
     </div>
 
     <!-- Agendamento Column -->
     <div class="column">
         <h3>AGENDAMENTO DE CONSULTAS</h3>
-        <a href="https://docs.google.com/spreadsheets/d/1_dk46EpfGgyvFPN96t6eD4k6PtvYiONTMAEyuhOP4as/edit?gid=1138593898#gid=1138593898" target="_blank" rel="noopener noreferrer">AGENDA DOS OFICIAIS- 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/13RNfKMGFlXSYgLyszSECQBdC_fonS9wN5rK13A3Zd-o/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">AGENDA MENSAL - 2025</a>
-        <a href="https://docs.google.com/spreadsheets/d/1myss-eMCvf-LVsriuVsY6nQbfjeTPCpDCzWtVaVb-tY/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer">LISTA DE ESPERA</a>
+        <a href="https://docs.google.com/spreadsheets/d/1_dk46EpfGgyvFPN96t6eD4k6PtvYiONTMAEyuhOP4as/edit?gid=1138593898#gid=1138593898" target="_blank" rel="noopener noreferrer" class="btn-agenda">AGENDA DOS OFICIAIS- 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/13RNfKMGFlXSYgLyszSECQBdC_fonS9wN5rK13A3Zd-o/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-agenda">AGENDA MENSAL - 2025</a>
+        <a href="https://docs.google.com/spreadsheets/d/1myss-eMCvf-LVsriuVsY6nQbfjeTPCpDCzWtVaVb-tY/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="btn-agenda">LISTA DE ESPERA - 2025</a>
     </div>
+
 </div>
 
+<div class="container">
+    
 <!-- NOVA COLUNA ABAIXO DA COLUNA DO MEIO -->
-<div class="column external">
-    <h3>LINKS EXTERNOS</h3>
-    <a href="https://gestorweb.pm.pa.gov.br/" target="_blank" rel="noopener noreferrer">GESTOR WEB</a>
-    <a href="https://www.sistemas.pa.gov.br/governodigital/private/main/index.xhtml" target="_blank" rel="noopener noreferrer">PAE</a>
+    <div class="column external">
+        <h3>LINKS EXTERNOS</h3>
+        <a href="https://gestorweb.pm.pa.gov.br/" target="_blank" rel="noopener noreferrer" class="btn-externo">GESTOR WEB</a>
+        <a href="https://www.sistemas.pa.gov.br/governodigital/private/main/index.xhtml" target="_blank" rel="noopener noreferrer" class="btn-externo">PAE</a>
+        <a href="https://www.pm.pa.gov.br/" target="_blank" rel="noopener noreferrer" class="btn-externo">SITE POLÍCIA MILITAR</a>
+        <a href="https://www.pm.pa.gov.br/bg-e-adit/category/1904-setembro.html" target="_blank" rel="noopener noreferrer" class="btn-externo"> BOLETIM GERAL</a>
+    </div>
 </div>
 
 </body>
 </html>
-
-
-
-
-
