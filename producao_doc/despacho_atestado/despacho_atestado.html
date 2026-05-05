@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerador Visual de Ofício - AMC</title>
+
+  <style>
+    :root {
+      --bg: #eef3f8;
+      --card: #ffffff;
+      --border: #cfd8e3;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel, .page-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .page-wrap {
+      padding: 22px;
+      overflow: auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 10px 0 6px;
+      font-size: 0.95rem;
+    }
+
+    input, textarea, select  {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #e5e7eb; color: var(--text); }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .page {
+      width: 794px;
+      min-height: 1123px;
+      margin: 0 auto;
+      background: white;
+      color: #000;
+      padding: 42px 56px 48px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      font-family: "Arial", Times, serif;
+      line-height: 1.45;
+      font-size: 16.5px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 95px 1fr 95px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header img {
+      width: 48px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .header-text {
+      text-align: center;
+      font-size: 15.5px;
+      line-height: 1.25;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .header-line {
+      border-top: 2px solid #000;
+      margin-top: 10px;
+      margin-bottom: 34px;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .recipient {
+      margin-top: 22px;
+      white-space: pre-line;
+    }
+
+    .paragraph {
+      margin-top: 22px;
+      text-align: justify;
+      text-indent: 48px;
+    }
+
+    .paragraph2 {
+      margin-top: 60px;
+      /* text-align: justify; */
+      text-indent: 48px;
+    }
+
+    .items {
+      margin-top: 10px;
+      padding-left: 24px;
+    }
+
+    .items div {
+      margin-bottom: 8px;
+      text-align: justify;
+    }
+
+    .signature {
+      margin-top: 44px;
+      text-align: center;
+      /* white-space: pre-line; */
+    }
+
+    .footer {
+      margin-top: 84px;
+      text-align: center;
+      font-size: 13.5px;
+      line-height: 1.35;
+    }
+
+    .line-value {
+      font-weight: 700;
+    }
+
+    .campo-obrigatorio {
+      border-color: #dc2626 !important;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+      background: #fff7f7 !important;
+    }
+
+    @media (max-width: 1220px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .page-wrap {
+        padding: 10px;
+      }
+      .page {
+        width: 100%;
+        min-height: auto;
+        padding: 28px 20px 34px;
+        font-size: 16px;
+      }
+      .header {
+        grid-template-columns: 72px 1fr 72px;
+      }
+      .header img {
+        width: 58px;
+      }
+      .header-text {
+        font-size: 14px;
+      }
+    }
+
+    @media print {
+      body { background: white; }
+      .panel { display: none; }
+      .layout { display: block; }
+      .page-wrap {
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+      .page {
+        box-shadow: none;
+        margin: 0;
+        width: 100%;
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Despacho de atestados homologados</h1>
+    <!-- <p class="subtitle">Modelo com cabeçalho e logos, pronto para preencher, visualizar e imprimir.</p> -->
+
+    <div class="layout">
+      <aside class="panel">
+        <span class="badge">Preenchimento</span>
+        <h2>Campos do Despacho</h2>
+
+        <label for="data">Data do documento</label>
+        <input id="data" type="date" placeholder="Ex.: 22 de abril de 2026" />
+
+        <label for="posto_comando">Posto do Comandante/Chefe</label>
+        <select id="posto_comando">
+          <option value="">Selecione...</option>
+          <option value="CEL QOPM">CEL QOPM</option>
+          <option value="TEN CEL QOPM">TEN CEL QOPM</option>
+          <option value="MAJ QOPM">MAJ QOPM</option>
+          <option value="CAP QOPM">CAP QOPM</option>
+          <option value="CEL QOSPM">CEL QOPM</option>
+          <option value="TEN CEL QOSPM">TEN CEL QOPM</option>
+          <option value="MAJ QOSPM">MAJ QOPM</option>
+          <option value="CAP QOSPM">CAP QOPM</option>
+        </select>
+
+        <label for="nome_comando">Nome completo do Comandante/Chefe</label>
+        <input id="nome_comando" type="text" placeholder="Ex.: FULANO DE TAL" />
+
+        <label for="opm">OPM</label>
+        <input id="opm" type="text" placeholder="Ex.: Comandante da Unidade" />
+
+        <label for="nome_militar">Posto + RG + Nome completo do Militar</label>
+        <input id="nome_militar" type="text" placeholder="Ex.: CB PM JOÃO DA SILVA" />
+
+        <label for="data_homologacao">Data da homologação</label>
+        <input id="data_homologacao" type="date" placeholder="Ex.: 18/04/2026" />
+
+        <label for="saudacao">Saudação</label>
+        <select id="saudacao">
+          <option value="">Selecione...</option>
+          <option value="Respeitosamente,">Respeitosamente</option>
+          <option value="Atenciosamente,">Atenciosamente</option>
+        </select>
+
+        <label for="assinante">Assinante</label>
+        <select id="assinante">
+          <option value="">Selecione...</option>
+          <option value="RICARDO **BRAGA** DE AMORIM - TEN CEL QOSPM">TEN CEL BRAGA</option>
+          <option value="**LEONARDO** CUNHA ALVES DA CUNHA - MAJ QOSPM">MAJ LEONARDO</option>
+          <option value="MARCIO **GERALDO** OLIVEIRA COSTA - 1° TEN QOAPM">1° TEN QOAPM GERALDO</option>
+          <option value="**BÁRBARA** GISELE DE ARAÚJO FURTADO - SUB TEN QPMP-2 RR">SUB TEN QPMP-2 RR BARBARA</option>
+          <option value="**CLEIDIANA** DA COSTA FERNANDES DA SILVA - SUB TEN QPMP-2 RR">SUB TEN QPMP-2 RR CLEIDIANA</option>
+          <option value="SÔNIA **MARLY** DE OLIVEIRA DOS SANTOS MACEDO - SUB TEN QPMP-2 RR">SUB TEN QPMP-2 RR MARLY</option>
+          <option value="MAYLON NASCIMENTO **COHEM** - CB QPMP-0">CB QPMP-0 COHEM</option>
+        </select>
+
+        <label for="cargo_assinante">Cargo do assinante</label>
+        <select id="cargo_assinante">
+          <option value="">Selecione...</option>
+          <option value="Diretor do AMC">Diretor</option>
+          <option value="Subdiretor do AMC">Subdiretor</option>
+          <option value="Chefe de Secretaria">Chefe da secretaria</option>
+          <option value="Auxiliar de Secretaria">Auxiliar</option>
+        </select>
+
+        <label for="digitador">Digitador</label>
+        <select id="digitador">
+          <option value="">Selecione...</option>
+          <option value="1° TEN QOAPM GERALDO">1° TEN QOAPM GERALDO</option>
+          <option value="SUB TEN QPMP-2 RR BARBARA">SUB TEN QPMP-2 RR BARBARA</option>
+          <option value="SUB TEN QPMP-2 RR CLEIDIANA">SUB TEN QPMP-2 RR CLEIDIANA</option>
+          <option value="SUB TEN QPMP-2 RR MARLY">SUB TEN QPMP-2 RR MARLY</option>
+          <option value="CB QPMP-0 COHEM">CB QPMP-0 COHEM</option>
+          <option value="VC GUSTAVO">VC GUSTAVO</option>
+          <option value="VC JUAN">VC JUAN</option>
+          <option value="VC PEDRO">VC PEDRO</option>
+        </select>
+
+        <div class="buttons">
+          <button class="btn-primary" id="btnAtualizar">Atualizar documento</button>
+          <button class="btn-success" id="btnImprimir">Abrir PDF em nova guia</button>
+          <button class="btn-secondary" id="btnDocx">Baixar DOCX</button>
+          <button class="btn-danger" id="btnLimpar">Limpar</button>
+        </div>
+
+      </aside>
+
+      <section class="page-wrap">
+        <span class="badge">Pré-visualização</span>
+        <div class="page">
+          <div class="header">
+            <img alt="Brasão do Estado do Pará" src="LOGO_ESTADO.png" />
+            <div class="header-text">
+              GOVERNO DO ESTADO DO PARÁ<br>
+              SECRETARIA DE SEGURANÇA PÚBLICA E DEFESA SOCIAL<br>
+              POLÍCIA MILITAR DO PARÁ<br>
+              CORPO MILITAR DE SAÚDE<br>
+              AMBULATÓRIO MÉDICO CENTRAL
+            </div>
+            <img alt="Logo da Polícia Militar do Pará" src="LOGO_PM.png" />
+          </div>
+
+          <div class="header-line"></div>
+
+          <div class="right">Belém PA, <span id="out_data">{data}</span>.</div>
+
+          <div class="recipient">
+            Ao Sr. <span id="out_posto_comando">{posto_comando}</span> <span  id="out_nome_comando">{nome_comando}</span>
+            Comandante do <span id="out_opm">{opm}</span>
+          </div>
+
+          <div class="paragraph">
+            Em atenção ao expediente protocolizado eletronicamente por essa OPM, referente à apresentação do atestado médico de <span class="line-value" id="out_nome_militar">{militar}</span>, e visando a regularização da homologação de atestados médicos neste Ambulatório Médico Central, cumpre-me informar que a Polícia Militar, por meio da Portaria nº 065/2011, regulamentou o processo de homologação, conforme publicado no BG nº 208, de 16 de novembro de 2011.
+          </div>
+
+          <div class="paragraph">
+            Considerando que o atestado médico já está homologado desde <span class="line-value" id="out_data_homologacao">{data_homologacao}</span>, solicito que seja retirado o documento, diretamente na Recepção deste Ambulatório Médico Central – AMC, conforme a seguinte orientação:
+          </div>
+
+          <div class="items">
+            <div>1. Os atestados médicos apresentados para homologação serão processados e homologados em até 3 (três) dias úteis.</div>
+            <div>2. Após este prazo, os atestados poderão ser retirados pelo remetente ou por seu representante legal, diretamente na triagem/recepção do Ambulatório Médico Central.</div>
+          </div>
+          
+          <div class="paragraph2" id="out_saudacao">{saudacao}</div>
+          
+          <div class="signature">
+            <br>
+            <div id="out_assinante">{assinante}</div>
+            <div id="out_cargo_assinante">{cargo_assinante}</div>
+          </div>
+
+          <div class="footer">
+            <div class="header-line"></div>
+            Av. Brigadeiro Protásio S/Nº, Bairro: Marco, CEP 66087-810 Belém-Pará<br>
+            Fone: (091) A98405-3169 / 98495-6683<br>
+            Site: www.pm.pa.gov.br / e-mail: amc.pm.pa@gmail.com / Digitador: <span class="line-value" id="out_digitador">{digitador}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- PizZip -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"
+    onload="console.log('PizZip carregado:', window.PizZip)"
+    onerror="console.error('Erro ao carregar PizZip')">
+  </script>
+
+  <!-- Docxtemplater -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.47.4/docxtemplater.js"
+    onload="console.log('Docxtemplater carregado:', window.docxtemplater, window.Docxtemplater)"
+    onerror="console.error('Erro ao carregar Docxtemplater')">
+  </script>
+
+  <!-- FileSaver -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"
+    onload="console.log('FileSaver carregado:', window.saveAs)"
+    onerror="console.error('Erro ao carregar FileSaver')">
+  </script>
+
+  <!-- PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+    function valor(id, fallback = '{' + id + '}') {
+      const el = document.getElementById(id);
+      if (!el) return fallback;
+
+      const v = el.value.trim();
+      if (!v) return fallback;
+
+      if (el.type === 'date') {
+        return formatarDataBR(v);
+      }
+
+      return v;
+    }
+
+    function atualizarDocumento() {
+      document.getElementById('out_data').textContent = formatarDataExtensoBR(document.getElementById('data')?.value || '') || '{data}';
+      document.getElementById('out_posto_comando').textContent = valor('posto_comando', '{posto_comando}');
+      document.getElementById('out_nome_comando').innerHTML =aplicarNegritoSimples(valor('nome_comando', '{nome_comando}'));
+      document.getElementById('out_opm').textContent = valor('opm', '{opm}');
+      document.getElementById('out_nome_militar').textContent = valor('nome_militar', '{nome_militar}');
+      document.getElementById('out_data_homologacao').textContent = valor('data_homologacao', '{data_homologacao}');
+      document.getElementById('out_saudacao').textContent = valor('saudacao', '{saudacao}');
+      document.getElementById('out_assinante').innerHTML =aplicarNegritoSimples(valor('assinante', '{assinante}'));
+      document.getElementById('out_cargo_assinante').textContent = valor('cargo_assinante', '{cargo_assinante}');
+      document.getElementById('out_digitador').textContent = valor('digitador', '{digitador}');
+    }
+
+    function limparCampos() {
+      document.querySelectorAll('input').forEach(input => input.value = '');
+
+      document.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
+      });
+
+      preencherDataHoje();
+      atualizarDocumento();
+    }
+
+    async function abrirPdfEmNovaGuia() {
+      if (!validarCamposObrigatorios()) return;
+      try {
+        atualizarDocumento();
+
+        const { jsPDF } = window.jspdf;
+        const elemento = document.querySelector('.page');
+
+        // Remove sombra temporariamente para não sair no PDF
+        const sombraOriginal = elemento.style.boxShadow;
+        const margemOriginal = elemento.style.margin;
+
+        elemento.style.boxShadow = 'none';
+        elemento.style.margin = '0';
+
+        const canvas = await html2canvas(elemento, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+
+        // Volta o estilo visual da página
+        elemento.style.boxShadow = sombraOriginal;
+        elemento.style.margin = margemOriginal;
+
+        const imgData = canvas.toDataURL('image/png');
+
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
+
+        const pageWidth = 210;
+        const pageHeight = 297;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+
+        const blob = pdf.output('blob');
+        const blobUrl = URL.createObjectURL(blob);
+
+        const novaGuia = window.open(blobUrl, '_blank');
+
+        if (!novaGuia) {
+          alert('O navegador bloqueou a nova guia. Permita pop-ups para este site.');
+          URL.revokeObjectURL(blobUrl);
+          return;
+        }
+
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+      } catch (error) {
+        console.error(error);
+        alert('Não foi possível gerar o PDF.');
+      }
+    }
+
+    async function carregarBinario(caminho) {
+      const resposta = await fetch(caminho, { cache: 'no-store' });
+        console.log('Carregando:', caminho);
+        console.log('Status:', resposta.status, resposta.statusText);
+        console.log('Content-Type:', resposta.headers.get('content-type'));
+
+      if (!resposta.ok) {
+        throw new Error(`Erro ao carregar ${caminho}: ${resposta.status} ${resposta.statusText}`);
+      }
+
+      return await resposta.arrayBuffer();
+    }
+
+    function obterDadosTemplate() {
+      return {
+        data: formatarDataExtensoBR(document.getElementById('data')?.value || ''),
+        posto_comando: valor('posto_comando', ''),
+        nome_comando: valor('nome_comando', ''),
+        opm: valor('opm', ''),
+        nome_militar: valor('nome_militar', ''),
+        data_homologacao: valor('data_homologacao', ''),
+        saudacao: valor('saudacao', ''),
+        assinante: valor('assinante', ''),
+        cargo_assinante: valor('cargo_assinante', ''),
+        digitador: valor('digitador', '')
+      };
+    }
+
+    async function gerarDocx() {
+      if (!validarCamposObrigatorios()) return;
+      try {
+        console.log('Iniciando geração do DOCX...');
+
+        const content = await carregarBinario('./assets/template_oficio.docx');
+        console.log('Template carregado. Tamanho:', content.byteLength);
+
+        if (!window.PizZip) {
+          throw new Error('PizZip não foi carregado.');
+        }
+
+        const zip = new window.PizZip(content);
+
+        const DocxClass =
+          window.Docxtemplater ||
+          window.docxtemplater ||
+          window.Docxgen ||
+          window.DocxGen;
+
+        console.log('Docxtemplater encontrado:', DocxClass);
+
+        if (!DocxClass) {
+          throw new Error('Docxtemplater não foi carregado.');
+        }
+
+        const doc = new DocxClass(zip, {
+          paragraphLoop: true,
+          linebreaks: true
+        });
+
+        const dados = obterDadosTemplate();
+        console.log('Dados enviados ao template:', dados);
+
+        doc.render(dados);
+
+        const blob = doc.getZip().generate({
+          type: 'blob',
+          mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+
+        const nomeArquivo = gerarNomeArquivo('docx');
+        await salvarDocxPerguntando(blob, nomeArquivo);
+
+        console.log('DOCX gerado com sucesso.');
+      } catch (error) {
+        console.error('Erro completo ao gerar DOCX:', error);
+
+        if (error.properties && error.properties.errors) {
+          console.error('Detalhes do erro no template:', error.properties.errors);
+
+          const detalhes = error.properties.errors
+            .map(e => e.properties && e.properties.explanation ? e.properties.explanation : e.message)
+            .join('\n');
+
+          alert(`Erro ao gerar DOCX:\n${detalhes}`);
+          return;
+        }
+
+        alert(`Erro ao gerar DOCX: ${error.message}`);
+      }
+    }
+
+    function formatarDataBR(valor) {
+      if (!valor) return '';
+
+      const [ano, mes, dia] = valor.split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    function formatarDataExtensoBR(valor) {
+      if (!valor) return '';
+
+      const [ano, mes, dia] = valor.split('-');
+
+      const meses = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril',
+        'Maio', 'Junho', 'Julho', 'Agosto',
+        'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ];
+
+      return `${Number(dia)} de ${meses[Number(mes) - 1]} de ${ano}`;
+    }
+
+    function preencherDataHoje() {
+      const campoData = document.getElementById('data');
+
+      if (!campoData) return;
+
+      const hoje = new Date();
+
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+
+      campoData.value = `${ano}-${mes}-${dia}`;
+    }
+
+    function aplicarNegritoSimples(texto) {
+      return texto.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function limparNomeArquivo(texto) {
+      return texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[\\/:*?"<>|]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function gerarNomeArquivo(extensao) {
+      const militar = valor('nome_militar', '')
+        .replace('{nome_militar}', '')
+        .trim();
+
+      const opm = valor('opm', '')
+        .replace('{opm}', '')
+        .trim();
+
+      let nome = `ATESTADO MÉDICO DO ${militar}`;
+
+      if (opm) {
+        nome += ` - ${opm}`;
+      }
+
+      nome = limparNomeArquivo(nome);
+
+      if (!nome || nome === 'ATESTADO MEDICO DO') {
+        nome = 'ATESTADO MEDICO';
+      }
+
+      return `${nome}.${extensao}`;
+    }
+
+    function validarCamposObrigatorios() {
+      const campos = [
+        { id: 'data', nome: 'Data do documento' },
+        { id: 'posto_comando', nome: 'Posto do Comandante/Chefe' },
+        { id: 'nome_comando', nome: 'Nome completo do Comandante/Chefe' },
+        { id: 'opm', nome: 'OPM' },
+        { id: 'nome_militar', nome: 'Posto + RG + Nome completo do Militar' },
+        { id: 'data_homologacao', nome: 'Data da homologação' },
+        { id: 'saudacao', nome: 'Saudação' },
+        { id: 'assinante', nome: 'Assinante' },
+        { id: 'cargo_assinante', nome: 'Cargo do assinante' },
+        { id: 'digitador', nome: 'Digitador' }
+      ];
+
+      const faltando = [];
+
+      campos.forEach(campo => {
+        const elemento = document.getElementById(campo.id);
+
+        if (!elemento || !elemento.value.trim()) {
+          faltando.push(campo.nome);
+
+          if (elemento) {
+            elemento.classList.add('campo-obrigatorio');
+          }
+        } else {
+          elemento.classList.remove('campo-obrigatorio');
+        }
+      });
+
+      if (faltando.length > 0) {
+        alert(
+          'Preencha os campos obrigatórios antes de gerar o documento:\n\n' +
+          faltando.map(item => `- ${item}`).join('\n')
+        );
+
+        const primeiroCampo = campos
+          .map(campo => document.getElementById(campo.id))
+          .find(elemento => elemento && elemento.classList.contains('campo-obrigatorio'));
+
+        if (primeiroCampo) {
+          primeiroCampo.focus();
+        }
+
+        return false;
+      }
+
+      return true;
+    }
+
+    async function salvarDocxPerguntando(blob, nomeArquivo) {
+      if (!window.showSaveFilePicker) {
+        alert('Seu navegador não permite escolher a pasta pelo site. O arquivo será baixado normalmente.');
+        saveAs(blob, nomeArquivo);
+        return;
+      }
+
+      try {
+        const handle = await window.showSaveFilePicker({
+          suggestedName: nomeArquivo,
+          types: [
+            {
+              description: 'Documento Word',
+              accept: {
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
+              }
+            }
+          ]
+        });
+
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          console.log('Usuário cancelou o salvamento.');
+          return;
+        }
+
+        throw error;
+      }
+    }
+
+
+    document.getElementById('btnAtualizar').addEventListener('click', atualizarDocumento);
+    document.getElementById('btnImprimir').addEventListener('click', abrirPdfEmNovaGuia);
+    document.getElementById('btnDocx').addEventListener('click', gerarDocx);
+    document.getElementById('btnLimpar').addEventListener('click', limparCampos);
+
+    document.addEventListener('input', (e) => {
+      if (e.target.matches('input, select, textarea')) {
+        e.target.classList.remove('campo-obrigatorio');
+        atualizarDocumento();
+      }
+    });
+
+    document.addEventListener('change', (e) => {
+      if (e.target.matches('input, select, textarea')) {
+        e.target.classList.remove('campo-obrigatorio');
+        atualizarDocumento();
+      }
+    });
+
+    preencherDataHoje();
+    atualizarDocumento();
+  </script>
+</body>
+</html>
